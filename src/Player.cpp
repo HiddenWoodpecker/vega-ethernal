@@ -7,8 +7,8 @@ Player::Player(Vector2 initPos, Vector2 viewDirection, float moveSpeed)
 void Player::move(Vector2 dir, Map &map) {
   float dx = dir.x * moveSpeed;
   float dy = dir.y * moveSpeed;
-  if (map.at((position.x + 2 * dx) / WALL_SIZE,
-             (position.y + 2 * dy) / WALL_SIZE) == nullptr) {
+  if (map.at((position.x + dx) / WALL_SIZE, (position.y + dy) / WALL_SIZE) ==
+      nullptr) {
     position.x += dx;
     position.y += dy;
   }

@@ -1,4 +1,6 @@
 #include "../include/usr/Raycaster.hpp"
+// #include "../include/raymath.hpp"
+#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -109,4 +111,51 @@ Raycaster::raycast(Vector2 initPos, Vector2 viewDirection, Map &map) {
   return wallsToDraw;
 }
 
+std::vector<RayCollisionInfo>
+Raycaster::raycastSprites(Vector2 initPos, Vector2 viewDirection, Map &map,
+                          std::vector<StaticSprite *> &staticSprites) {
+
+  std::vector<RayCollisionInfo> spritesToDraw;
+  for (auto const spritePtr : staticSprites) {
+    Vector2 spritePos = spritePtr->getPosition();
+    float dx = spritePos.x - initPos.x;
+    float dy = spritePos.y - initPos.y;
+
+    // std::cout << dx << " " << dy << std::endl;
+    float theta = std::atan2(dy, dx);
+    float playerAngle = Vector2Angle((Vector2){1.0f, 0.0f}, viewDirection);
+
+    // float delta = theta - playerAngle;
+    float delta = Vector2Angle(viewDirection, (Vector2){dx, dy});
+    // if ((dx > 0 && playerAngle > PI) || (dx < 0 && dy < 0)) {
+    //   delta += 2 * PI;
+    // }
+    float deltaRays = (float)delta / static_cast<float>(DELTA_ANGLE);
+
+    // std::cout << "playerAngle " << playerAngle << std::endl;
+    // std::cout << "delta " << delta << std::endl;
+    // std::cout << "DeltaAngel " << DELTA_ANGLE << std::endl;
+    // std::cout << "delta / DeltaAngel " << deltaRays << std::endl;
+    // std::cout << "deltaRays " << deltaRays << std::endl;
+    float screenX =
+        (static_cast<float>(NUM_RAYS) / 2 + deltaRays) * HORIZONTAL_RESOLUTION;
+    float dist = std::hypot(dx, dy);
+    float normDist = (dist * cos(delta));
+    // std::cout << "screenX " << screenX << std::endl;
+    // std::cout << "normDist " << normDist << std::endl;
+    // if (spritePtr->getSize().x / 2 < screenX &&
+    //     screenX < (WINDOW_WIDTH + spritePtr->getSize().x / 2) &&
+    //     normDist > EPSILON) {
+    RayCollisionInfo rci;
+    rci.obj = spritePtr;
+    rci.offset = screenX;
+    rci.isStaticObjectHit = true;
+    rci.distance = normDist;
+    rci.obj = spritePtr;
+
+    spritesToDraw.push_back(rci);
+    //}
+  }
+  return spritesToDraw;
+}
 Raycaster::~Raycaster(){};

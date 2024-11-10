@@ -26,7 +26,8 @@ public:
   Object();
   Object(Vector2 &);
   Object(Vector2 &, Textures);
-  virtual Textures getTexture();
+  Vector2 getPosition() const;
+  virtual Textures getTexture() const;
   virtual void draw(RayCollisionInfo &) = 0;
   //  virtual void move(Vector2);
   virtual std::string to_String();

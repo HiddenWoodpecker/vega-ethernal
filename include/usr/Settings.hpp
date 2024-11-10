@@ -7,6 +7,9 @@ enum Textures {
   DO_NOT_LOAD,
   STONE_WALL,
   STONE_WALL_WITH_BLOOD,
+  AMMOPACK,
+  MEDPACK,
+  SHELLPACK,
 };
 #endif
 
@@ -17,7 +20,7 @@ enum Textures {
 #define WINDOW_HALF_WIDTH WINDOW_WIDTH / 2
 #define WINDOWN_HALF_HEIGHT WINDOW_HEIGHT / 2
 
-#define NUM_RAYS 500
+#define NUM_RAYS 200
 
 #define DEFAULT_FOV PI / 3
 #define DEFAULT_HALF_FOV DEFAULT_FOV / 2

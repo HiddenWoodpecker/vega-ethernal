@@ -1,6 +1,7 @@
 #pragma once
 #include "Map.hpp"
 #include "Object.hpp"
+#include "StaticSprite.hpp"
 #ifndef TEXTURES_
 #define TEXTURES_
 enum Textures {
@@ -17,7 +18,9 @@ public:
 
   std::vector<RayCollisionInfo> raycast(Vector2 initPos, Vector2 viewDirection,
                                         Map &map);
-  RayCollisionInfo castSingleRay(Vector2 &initPos, Vector2 &viewDirection,
-                                 Map &map, Vector2 &initialViewDirection);
+
+  std::vector<RayCollisionInfo>
+  raycastSprites(Vector2 initPos, Vector2 viewDirection, Map &map,
+                 std::vector<StaticSprite *> &staticSprites);
   ~Raycaster();
 };

@@ -1,6 +1,6 @@
 #pragma once
 #include "../raylib.hpp"
-#include "Raycaster.hpp"
+#include "Object.hpp"
 #include <vector>
 class Renderer {
 private:
