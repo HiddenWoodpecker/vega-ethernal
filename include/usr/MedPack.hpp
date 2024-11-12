@@ -3,8 +3,8 @@
 class MedPack : public StaticSprite {
 public:
   MedPack();
-  MedPack(Textures txt, Vector2 &position);
+  MedPack(Textures txt, Vector2 &position, float, float);
   void draw(RayCollisionInfo &);
-  void affectPlayer(Player &);
+  bool affectPlayer(Player &);
   ~MedPack();
 };

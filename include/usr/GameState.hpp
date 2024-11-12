@@ -5,13 +5,17 @@
 #include "Renderer.hpp"
 #include "Settings.hpp"
 #include "StaticSprite.hpp"
+#include "Weapon.hpp"
 class GameState {
 private:
   Player player;
   Map map;
   Renderer renderer;
+  Raycaster rc;
+  unsigned short gameCounter;
   std::vector<Object *> enemies;
   std::vector<StaticSprite *> staticSprites;
+  std::vector<Weapon *> weapons;
   // std::vector<Projectiles>
 public:
   GameState();
@@ -21,6 +25,9 @@ public:
   Renderer &getRenderer();
   Player &getPlayer();
   Map &getMap();
+  Raycaster &getRaycaster();
+  void update();
+  void manageControls();
   ~GameState() {
     for (auto a : staticSprites) {
       delete a;

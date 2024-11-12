@@ -10,10 +10,10 @@ int main() {
   raylib::Color textColor(LIGHTGRAY);
   raylib::Window w(screenWidth, screenHeight, "VEGA Ethernal");
 
-  Raycaster rc = Raycaster();
   SetTargetFPS(60);
   GameState gs;
   Map map = gs.getMap();
+  Raycaster rc = gs.getRaycaster();
   Player player = gs.getPlayer();
   Renderer renderer = gs.getRenderer();
   while (!w.ShouldClose()) // Detect window close button or ESC key
@@ -21,27 +21,13 @@ int main() {
     // Draw
     BeginDrawing();
     // DrawTexture(txt, 100, 250, WHITE);
-    DrawCircle(player.getPosition().x, player.getPosition().y, 10,
-               raylib::Color(255, 0, 0, 125));
     ClearBackground(BLACK);
     // TODO: MAP DRAW
     // map.draw();
     // TODO raycast
-    player.manageControls(map);
-    std::vector<RayCollisionInfo> wallsToDraw =
-        rc.raycast(player.getPosition(), player.getViewDirection(), map);
-    // std::vector<RayCollisionInfo> spritesToDraw
-    std::vector<RayCollisionInfo> spritesToDraw = rc.raycastSprites(
-        player.getPosition(), player.getViewDirection(), map, gs.getSprites());
-    wallsToDraw.insert(wallsToDraw.end(), spritesToDraw.begin(),
-                       spritesToDraw.end());
-    renderer.renderObjects(wallsToDraw);
     // renderer.renderObjects(spritesToDraw);
-    DrawLineEx(player.getPosition(),
-               Vector2Add(player.getPosition(),
-                          Vector2Scale(player.getViewDirection(), 30)),
-               3, raylib::Color(RED));
-
+    gs.update();
+    gs.manageControls();
     EndDrawing();
   }
   return 0;

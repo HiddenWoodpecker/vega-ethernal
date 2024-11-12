@@ -2,9 +2,8 @@
 #include "../include/usr/MedPack.hpp"
 #include <iostream>
 MedPack::MedPack() : StaticSprite(){};
-MedPack::MedPack(Textures txt, Vector2 &position, int width, int height,
-                 float scale)
-    : StaticSprite(txt, position, width, height, scale){};
+MedPack::MedPack(Textures txt, Vector2 &position, float offset, float scale)
+    : StaticSprite(txt, position, offset, scale){};
 
 void MedPack::draw(RayCollisionInfo &rci) {
   if (this->isVisible) {
@@ -18,7 +17,7 @@ void MedPack::draw(RayCollisionInfo &rci) {
     float projHeight = proj * spriteHeight * scale;
     float spriteHalfWidth = projWidth / 2;
     float posx = rci.offset - spriteHalfWidth;
-    float posy = WINDOWN_HALF_HEIGHT - (projHeight) / (2) + projHeight * 1.5f;
+    float posy = WINDOWN_HALF_HEIGHT - (projHeight) / (2) + projHeight * offset;
 
     Rectangle source = Rectangle{0, 0, (float)spriteWidth, (float)spriteHeight};
     Rectangle dest = {posx, posy, projWidth, projHeight};
@@ -30,8 +29,8 @@ bool MedPack::affectPlayer(Player &p) {
   Vector2 pos = p.getPosition();
   if (std::hypot(this->position.x - pos.x, this->position.y - pos.y) < 50.0f &&
       isVisible) {
-    // TODO: ammopack functionality
-    p.rotateCamera(0.0005f);
+    // TODO: medpack functionality
+    p.rotateCamera(0.5f);
     this->isVisible = false;
     return true;
   }

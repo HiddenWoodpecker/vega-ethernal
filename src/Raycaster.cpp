@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-Raycaster::Raycaster(){};
+Raycaster::Raycaster() {};
 
 inline short signum(double x) {
   if (x == (double)0) {
@@ -158,4 +158,4 @@ Raycaster::raycastSprites(Vector2 initPos, Vector2 viewDirection, Map &map,
   }
   return spritesToDraw;
 }
-Raycaster::~Raycaster(){};
+Raycaster::~Raycaster() {};

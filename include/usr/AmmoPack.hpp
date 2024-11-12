@@ -3,8 +3,8 @@
 class AmmoPack : public StaticSprite {
 public:
   AmmoPack();
-  AmmoPack(Textures txt, Vector2 &position, int width, int height);
+  AmmoPack(Textures txt, Vector2 &position, float offset, float scale);
   void draw(RayCollisionInfo &);
-  void affectPlayer(Player &);
+  bool affectPlayer(Player &);
   ~AmmoPack();
 };

@@ -5,11 +5,13 @@
 
 void Renderer::loadTextures() {
   Texture t1 = LoadTexture("textures/wall1.png");
-  Texture t2 = LoadTexture("textures/wall2.png");
+  Texture t2 = LoadTexture("textures/wall5.png");
   Texture t3 = LoadTexture("textures/wall3.png");
   Texture t4 = LoadTexture("textures/wall4.png");
-  Texture t5 = LoadTexture("textures/ammopack.png");
-  Texture t6 = LoadTexture("textures/wall4-1.png");
+  Texture t5 = LoadTexture("textures/wall4-1.png");
+  Texture t6 = LoadTexture("textures/ammopack.png");
+  Texture t7 = LoadTexture("textures/aid.png");
+  Texture t8 = LoadTexture("textures/shotgun.png");
   textures.push_back(t1);
   textures.push_back(t2);
   textures.push_back(t3);
@@ -17,6 +19,8 @@ void Renderer::loadTextures() {
   textures.push_back(t5);
   // sprites
   textures.push_back(t6);
+  textures.push_back(t7);
+  textures.push_back(t8);
 }
 void Renderer::unloadTextures() {
   for (auto t : textures) {
@@ -41,8 +45,8 @@ void Renderer::renderObjects(std::vector<RayCollisionInfo> &objectsToRender) {
         // std::cout << "Actual texture size " << rci.txt->width <<
         // rci.txt->height
         //           << std::endl;
+        rci.obj->draw(rci);
       }
-      rci.obj->draw(rci);
     }
   }
 }
