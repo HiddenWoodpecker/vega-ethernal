@@ -41,12 +41,11 @@ void Renderer::renderObjects(std::vector<RayCollisionInfo> &objectsToRender) {
     RayCollisionInfo rci = objectsToRender.at(i);
     if (rci.obj != nullptr) {
       rci.txt = &Renderer::getTexture(rci.obj->getTexture());
-      if (rci.isStaticObjectHit) {
-        // std::cout << "Actual texture size " << rci.txt->width <<
-        // rci.txt->height
-        //           << std::endl;
-        rci.obj->draw(rci);
-      }
+      rci.obj->draw(rci);
+    } else {
+      std::cout << "obj not found" << std::endl;
+
+      std::cout << rci.isWallHit << std::endl;
     }
   }
 }

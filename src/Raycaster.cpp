@@ -98,6 +98,7 @@ Raycaster::raycast(Vector2 initPos, Vector2 viewDirection, Map &map) {
       rciVer.rayNum = rayNum;
       wallsToDraw.push_back(rciVer);
     } else {
+      // DrawLineEx(initPos, rciHor.hitPoint, 1, raylib::Color(WHITE));
       rciHor.projectionHeight =
           (float)SCREEN_DIST * WALL_HEIGHT / (rciHor.distance + EPSILON) /
           cos(Vector2Angle(viewDirection, initialVievDirection));

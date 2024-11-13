@@ -69,7 +69,7 @@ void GameState::update() {
 
     Weapon *wp = weapons.at(i);
     wp->isSelected = true;
-    wp->updateFrameCounter(gameCounter);
+    wp->updateFrameCounter(GetFrameTime());
     wp->animate(renderer.getTexture(wp->getTexture()));
   }
 

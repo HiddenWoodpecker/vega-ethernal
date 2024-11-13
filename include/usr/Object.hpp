@@ -15,7 +15,7 @@ struct RayCollisionInfo {
   Vector2 hitPoint;
   int rayNum;
   float projectionHeight;
-  RayCollisionInfo() : txt(nullptr), obj(nullptr){};
+  RayCollisionInfo() : txt(nullptr), obj(nullptr) {};
 };
 class Object {
 protected:
