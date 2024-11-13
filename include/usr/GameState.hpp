@@ -1,6 +1,7 @@
 #pragma once
 // #include "Object.hpp"
 // #include "Player.hpp"
+#include "NPC.hpp"
 #include "Raycaster.hpp"
 #include "Renderer.hpp"
 #include "Settings.hpp"
@@ -12,16 +13,16 @@ private:
   Map map;
   Renderer renderer;
   Raycaster rc;
-  unsigned short gameCounter;
-  std::vector<Object *> enemies;
+  long long gameCounter;
+  std::vector<StaticSprite *> enemies;
   std::vector<StaticSprite *> staticSprites;
-  std::vector<Weapon *> weapons;
   // std::vector<Projectiles>
 public:
   GameState();
   // void applyEffectToPlayer();
   void loadSprites(std::vector<std::pair<Textures, Vector2>> &sprites);
   std::vector<StaticSprite *> &getSprites();
+  std::vector<StaticSprite *> &getEnemies();
   Renderer &getRenderer();
   Player &getPlayer();
   Map &getMap();
@@ -32,8 +33,8 @@ public:
     for (auto a : staticSprites) {
       delete a;
     }
-    for (auto a : enemies) {
-      delete a;
-    }
+    // for (auto a : enemies) {
+    //   delete a;
+    // }
   }
 };

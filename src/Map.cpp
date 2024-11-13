@@ -1,17 +1,20 @@
 #include "../include/usr/Map.hpp"
 #include "../include/usr/Settings.hpp"
-static int map1[10][10] = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 1, 0, 0, 0, 0, 0, 1, 1, 1}, {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 1, 1, 1}, {1, 1, 0, 0, 0, 0, 0, 1, 1, 1},
-    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 0, 2, 2},
-    {1, 1, 3, 3, 3, 3, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-};
+static int map1[17][10] = {
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {1, 1, 0, 0, 0, 0, 0, 0, 1, 1},
+    {1, 1, 0, 0, 0, 0, 0, 0, 1, 1}, {1, 1, 0, 0, 0, 0, 0, 0, 1, 1},
+    {1, 2, 0, 0, 0, 0, 0, 0, 1, 1}, {1, 1, 0, 0, 0, 0, 0, 0, 1, 1},
+    {1, 1, 0, 0, 0, 0, 0, 0, 1, 1}, {1, 1, 0, 0, 0, 0, 0, 0, 1, 1},
+    {1, 1, 0, 0, 0, 0, 0, 0, 1, 1}, {1, 1, 0, 3, 3, 0, 0, 0, 1, 1},
+    {1, 1, 0, 0, 0, 0, 0, 0, 1, 1}, {1, 1, 0, 0, 0, 0, 0, 0, 1, 1},
+    {3, 1, 0, 0, 0, 0, 0, 0, 1, 3}, {3, 1, 0, 0, 0, 0, 0, 0, 2, 3},
+    {1, 1, 0, 1, 0, 0, 0, 0, 1, 1}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    {1, 1, 3, 3, 3, 3, 1, 1, 1, 2}};
 
 void fillMap(Map &map) {
 
-  for (int i = 0; i < 10; ++i) {
-    for (int j = 0; j < 10; ++j) {
+  for (int i = 0; i < Map::mapHeight; ++i) {
+    for (int j = 0; j < Map::mapWidth; ++j) {
       if (map1[i][j] != 0) {
         Vector2 wallPosition = {(float)i, (float)j};
         map.mapContent[i][j] =
@@ -34,10 +37,11 @@ Wall *Map::at(float i, float j) {
 }
 
 void Map::draw() {
-  for (int i = 0; i < 9; ++i) {
-    for (int j = 0; j < 9; ++j) {
+  for (int i = 0; i < Map::mapHeight; ++i) {
+    for (int j = 0; j < Map::mapWidth; ++j) {
       if (mapContent[i][j] != nullptr) {
-        //(mapContent[i][j])->draw();
+        DrawRectangle(i * WALL_SIZE / 5, j * WALL_SIZE / 5, WALL_SIZE / 5,
+                      WALL_SIZE / 5, RED);
       }
     }
   }

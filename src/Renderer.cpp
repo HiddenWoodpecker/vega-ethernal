@@ -12,6 +12,7 @@ void Renderer::loadTextures() {
   Texture t6 = LoadTexture("textures/ammopack.png");
   Texture t7 = LoadTexture("textures/aid.png");
   Texture t8 = LoadTexture("textures/shotgun.png");
+  Texture t9 = LoadTexture("textures/shotgun.png");
   textures.push_back(t1);
   textures.push_back(t2);
   textures.push_back(t3);
@@ -21,6 +22,7 @@ void Renderer::loadTextures() {
   textures.push_back(t6);
   textures.push_back(t7);
   textures.push_back(t8);
+  textures.push_back(t9);
 }
 void Renderer::unloadTextures() {
   for (auto t : textures) {
@@ -39,15 +41,22 @@ void Renderer::renderObjects(std::vector<RayCollisionInfo> &objectsToRender) {
             });
   for (int i = 0; i < objectsToRender.size(); ++i) {
     RayCollisionInfo rci = objectsToRender.at(i);
+    // if (!rci.isNPCHit) {
     if (rci.obj != nullptr) {
       rci.txt = &Renderer::getTexture(rci.obj->getTexture());
       rci.obj->draw(rci);
     } else {
-      std::cout << "obj not found" << std::endl;
-
-      std::cout << rci.isWallHit << std::endl;
+      // std::cout << "obj not found" << std::endl;
+      //
+      // std::cout << rci.isWallHit << std::endl;
     }
   }
+
+  // else {
+  //   if (rci.obj != nullptr) {
+  //     rci.obj->draw(rci);
+  //   }
+  // }
 }
 
 void Renderer::renderWall(RayCollisionInfo &rci) {}

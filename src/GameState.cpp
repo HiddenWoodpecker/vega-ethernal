@@ -1,7 +1,9 @@
 #pragma once
 #include "../include/usr/GameState.hpp"
 #include "../include/usr/AmmoPack.hpp"
+#include "../include/usr/Demon.hpp"
 #include "../include/usr/MedPack.hpp"
+#include "../include/usr/PathFinder.hpp"
 #include "../include/usr/Shotgun.hpp"
 #include <iostream>
 static std::vector<std::pair<Textures, Vector2>> lvl1Sprites = {
@@ -9,6 +11,7 @@ static std::vector<std::pair<Textures, Vector2>> lvl1Sprites = {
     {Textures::SHOTGUN, (Vector2){0, 0}},
     //{Textures::AMMOPACK, (Vector2){350, 500}},
     {Textures::MEDPACK, (Vector2){350, 400}},
+    {Textures::DEMON, (Vector2){400, 750}},
     {Textures::AMMOPACK, (Vector2){400, 400}}};
 
 GameState::GameState()
@@ -18,6 +21,7 @@ GameState::GameState()
 }
 std::vector<StaticSprite *> &GameState::getSprites() { return staticSprites; }
 
+std::vector<StaticSprite *> &GameState::getEnemies() { return enemies; }
 void GameState::loadSprites(
     std::vector<std::pair<Textures, Vector2>> &sprites) {
   for (const auto &pair : sprites) {
@@ -30,6 +34,7 @@ void GameState::loadSprites(
       ss = new MedPack(txt, pos, 1.0f, 0.2f);
       staticSprites.push_back(ss);
       break;
+
     case AMMOPACK:
       std::cout << pos.x << " POSTION " << pos.y << std::endl;
       ss = new AmmoPack(txt, pos, 1.5f, 1.0f);
@@ -39,8 +44,14 @@ void GameState::loadSprites(
     case SHOTGUN:
       std::cout << pos.x << " shotgn " << pos.y << std::endl;
       Weapon *ss = new Shotgun(txt, pos, 1.5f, 3.0f, 2);
-      weapons.push_back(ss);
+      player.weapons.push_back(ss);
       break;
+    }
+    if (txt == DEMON) {
+      StaticSprite *d = new Demon(pos);
+
+      std::cout << pos.x << " demon " << pos.y << std::endl;
+      enemies.push_back(d);
     }
   }
 }
@@ -54,6 +65,8 @@ void GameState::update() {
       rc.raycast(player.getPosition(), player.getViewDirection(), map);
   std::vector<RayCollisionInfo> spritesToDraw = rc.raycastSprites(
       player.getPosition(), player.getViewDirection(), map, this->getSprites());
+  std::vector<RayCollisionInfo> enemiesToDraw = rc.raycastSprites(
+      player.getPosition(), player.getViewDirection(), map, this->getEnemies());
   for (int i = 0; i < spritesToDraw.size(); ++i) {
     RayCollisionInfo &rci = spritesToDraw.at(i);
 
@@ -62,12 +75,28 @@ void GameState::update() {
       ss->affectPlayer(player);
     }
   }
+  PathFinder pf;
+  Vector2 pp = getPlayer().getPosition();
+  Vector2 ep = enemies.at(0)->getPosition();
+  auto p = pf.findPath(map, pp, ep);
+  for (auto &i : p) {
+    // DrawRectangle(i.first * WALL_SIZE / 5, i.second * WALL_SIZE / 5,
+    //               WALL_SIZE / 5 - 1, WALL_SIZE / 5 - 1, GREEN);
+  }
+  for (int i = 0; i < enemies.size(); ++i) {
+
+    NPC *ss = dynamic_cast<NPC *>(enemies.at(i));
+    DrawCircle(ss->getPosition().x / 5, ss->getPosition().y / 5, 5, GREEN);
+    ss->update(player, map, gameCounter);
+    // std::cout << 1;
+  }
   wallsToDraw.insert(wallsToDraw.end(), spritesToDraw.begin(),
                      spritesToDraw.end());
+  wallsToDraw.insert(wallsToDraw.end(), enemiesToDraw.begin(),
+                     enemiesToDraw.end());
   renderer.renderObjects(wallsToDraw);
-  for (int i = 0; i < weapons.size(); ++i) {
-
-    Weapon *wp = weapons.at(i);
+  for (int i = 0; i < player.weapons.size(); ++i) {
+    Weapon *wp = player.weapons.at(i);
     wp->isSelected = true;
     wp->updateFrameCounter(GetFrameTime());
     wp->animate(renderer.getTexture(wp->getTexture()));
@@ -80,7 +109,7 @@ Player &GameState::getPlayer() { return player; }
 void GameState::manageControls() {
   player.manageControls(map);
   if (IsKeyDown(KEY_SPACE)) {
-    for (auto &weapon : weapons) {
+    for (auto &weapon : player.weapons) {
       weapon->isRealoading = true;
     }
   }

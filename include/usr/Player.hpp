@@ -1,10 +1,15 @@
 #include "Map.hpp"
+#include "Weapon.hpp"
 class Player {
 private:
   float fov;
   Vector2 viewDirection;
   float moveSpeed;
   Vector2 position;
+  int health;
+
+public:
+  std::vector<Weapon *> weapons;
 
 public:
   Player(Vector2 initPos, Vector2 viewDirection, float moveSpeed);

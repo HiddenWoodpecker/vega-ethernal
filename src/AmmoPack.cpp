@@ -1,9 +1,9 @@
 
 #include "../include/usr/AmmoPack.hpp"
 #include <iostream>
-AmmoPack::AmmoPack() : StaticSprite(){};
+AmmoPack::AmmoPack() : StaticSprite() {};
 AmmoPack::AmmoPack(Textures txt, Vector2 &position, float offset, float scale)
-    : StaticSprite(txt, position, offset, scale){};
+    : StaticSprite(txt, position, offset, scale) {};
 void AmmoPack::draw(RayCollisionInfo &rci) {
   if (this->isVisible) {
     // std::cout << "inside draw";
@@ -35,4 +35,4 @@ bool AmmoPack::affectPlayer(Player &p) {
   }
   return false;
 }
-AmmoPack::~AmmoPack(){};
+AmmoPack::~AmmoPack() {};
