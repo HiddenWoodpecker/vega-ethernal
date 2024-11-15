@@ -19,7 +19,7 @@ class NPC : public StaticSprite {
 protected:
   // Vector2 position;
   unsigned short frameCounter = 0;
-  unsigned short framePeriod = 10;
+  unsigned short framePeriod = 50;
 
   NPCSTATE state = IDLE;
   float speed = 1.5f;
@@ -27,9 +27,10 @@ protected:
   float offset = 0.1f;
   int damage = 5;
   int health = 100;
-  int attackRange = 200;
+  int attackRange = WALL_SIZE * 5;
   bool isAlive = true;
   bool isAggresive = false;
+  int size = 50;
 
 public:
   NPC();

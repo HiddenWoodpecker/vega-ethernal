@@ -76,20 +76,6 @@ void GameState::update() {
     }
   }
   PathFinder pf;
-  Vector2 pp = getPlayer().getPosition();
-  Vector2 ep = enemies.at(0)->getPosition();
-  auto p = pf.findPath(map, pp, ep);
-  for (auto &i : p) {
-    // DrawRectangle(i.first * WALL_SIZE / 5, i.second * WALL_SIZE / 5,
-    //               WALL_SIZE / 5 - 1, WALL_SIZE / 5 - 1, GREEN);
-  }
-  for (int i = 0; i < enemies.size(); ++i) {
-
-    NPC *ss = dynamic_cast<NPC *>(enemies.at(i));
-    DrawCircle(ss->getPosition().x / 5, ss->getPosition().y / 5, 5, GREEN);
-    ss->update(player, map, gameCounter);
-    // std::cout << 1;
-  }
   wallsToDraw.insert(wallsToDraw.end(), spritesToDraw.begin(),
                      spritesToDraw.end());
   wallsToDraw.insert(wallsToDraw.end(), enemiesToDraw.begin(),
@@ -103,6 +89,14 @@ void GameState::update() {
   }
 
   ++gameCounter;
+  // ОТрисовка миникарты
+  for (int i = 0; i < enemies.size(); ++i) {
+
+    NPC *ss = dynamic_cast<NPC *>(enemies.at(i));
+    DrawCircle(ss->getPosition().x / 5, ss->getPosition().y / 5, 5, GREEN);
+    ss->update(player, map, gameCounter);
+  }
+  DrawCircle(player.getPosition().x / 5, player.getPosition().y / 5, 5, BLUE);
 }
 
 Player &GameState::getPlayer() { return player; }

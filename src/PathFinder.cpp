@@ -70,23 +70,22 @@ vector<cell> PathFinder::findPath(Map &map, Vector2 &player, Vector2 &npc) {
       // cout << "left PAIR" << left.first << " "<<left.second << endl;
       // cout << "right PAIR" << right.first << " "<<right.second << endl;
 
-      if (!isVisited(visited, up) &&
-          map.isCellPassable(up.first, up.second + 1)) {
+      if (!isVisited(visited, up) && map.isCellPassable(up.first, up.second)) {
         toVisit.push(up);
         visited.push_back(make_pair(up, current));
       }
       if (!isVisited(visited, down) &&
-          map.isCellPassable(down.first, down.second - 1)) {
+          map.isCellPassable(down.first, down.second)) {
         toVisit.push(down);
         visited.push_back(make_pair(down, current));
       }
       if (!isVisited(visited, right) &&
-          map.isCellPassable(right.first + 1, right.second)) {
+          map.isCellPassable(right.first, right.second)) {
         toVisit.push(right);
         visited.push_back(make_pair(right, current));
       }
       if (!isVisited(visited, left) &&
-          map.isCellPassable(left.first - 1, left.second)) {
+          map.isCellPassable(left.first, left.second)) {
         toVisit.push(left);
         visited.push_back(make_pair(left, current));
       }

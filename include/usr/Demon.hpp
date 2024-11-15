@@ -12,6 +12,7 @@ public:
   bool canSpotPlayer(Player &, Map &, int);
   void move(Vector2);
   void runLogic(Player &, Map &, int);
+  int getTextureId(NPCSTATE);
   void draw(RayCollisionInfo &);
   void changeState(NPCSTATE);
   bool affectPlayer(Player &);
