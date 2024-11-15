@@ -60,29 +60,65 @@ void Demon::update(Player &player, Map &map, int frame) {
 }
 void Demon::runLogic(Player &player, Map &map, int frame) {
   frameCounter = frame;
+  if (frameCounter & framePeriod) {
+    triggerAnimation = true;
+  }
   Vector2 ppos = player.getPosition();
   Vector2 selfpos = this->getPosition();
   Vector2 playerToSelf = (Vector2){ppos.x - selfpos.x, ppos.y - selfpos.y};
+  bool playerSpotted = canSpotPlayer(player, map, frame);
+  float distanceToPlayer = Vector2Length(playerToSelf);
   // cout << dirToMove.x << dirToMove.y << endl;
 
-  cout << state << endl;
+  // cout << state << endl;
   switch (state) {
 
   case NPCSTATE::IDLE: {
-    if (Vector2Length(playerToSelf) < this->attackRange) {
+    if (Vector2Length(playerToSelf) < this->attackRange && playerSpotted) {
       isAggresive = true;
       this->changeState(NPCSTATE::WALK);
     }
     break;
   }
+  case NPCSTATE::DEATH: {
+    if (deathFrame >= 50) {
+
+      isAlive = false;
+      isVisible = false;
+    }
+    ++deathFrame;
+  }
+  case NPCSTATE::PAIN: {
+    if (painFrame >= 20) {
+      changeState(WALK);
+      painFrame = 0;
+      if (health < 0) {
+        changeState(DEATH);
+      }
+    }
+
+    ++painFrame;
+  }
+  case NPCSTATE::ATTACK: {
+    if (playerSpotted) {
+      if (frame % (framePeriod) == 0 && distanceToPlayer < (float)attackRange) {
+        player.health -= (GetRandomValue(1, this->damage));
+      }
+    } else {
+      changeState(WALK);
+    }
+  }
   case NPCSTATE::WALK: {
     move(dirToMove);
-    if (frame % (framePeriod) == 0) {
-      bool playerSpotted = canSpotPlayer(player, map, frame);
-      if (Vector2Length(playerToSelf) < this->attackRange && playerSpotted) {
+    if (frame % (framePeriod / 2) == 0) {
+      if (distanceToPlayer < this->attackRange && playerSpotted) {
         isAggresive = true;
+        if (distanceToPlayer < this->attackRange / 2) {
+          changeState(ATTACK);
+          break;
+        }
       }
-      if (Vector2Length(playerToSelf) > this->attackRange && !playerSpotted) {
+      if (distanceToPlayer > this->attackRange && !playerSpotted) {
         isAggresive = false;
       }
       PathFinder pf;
@@ -95,13 +131,14 @@ void Demon::runLogic(Player &player, Map &map, int frame) {
         if (path.size() > 1) {
           cell target = path.at(path.size() - 1);
           if (target != make_pair(-1, -1)) {
-            // cout << "target";
-            DrawRectangle(target.first * WALL_SIZE / 5,
-                          target.second * WALL_SIZE / 5, WALL_SIZE / 5 - 1,
-                          WALL_SIZE / 5 - 1, PURPLE);
+            // DrawRectangle(target.first * WALL_SIZE / 5,
+            //               target.second * WALL_SIZE / 5, WALL_SIZE / 5 - 1,
+            //               WALL_SIZE / 5 - 1, PURPLE);
             dirToMove = (Vector2){
-                (float)target.first * WALL_SIZE + WALL_SIZE / 2 - selfpos.x,
-                (float)target.second * WALL_SIZE + WALL_SIZE / 2 - selfpos.y};
+                (float)target.first * WALL_SIZE +
+                    WALL_SIZE / (2 + GetRandomValue(0, 2)) - selfpos.x,
+                (float)target.second * WALL_SIZE +
+                    WALL_SIZE / (2 + GetRandomValue(0, 2)) - selfpos.y};
           }
         }
       }
@@ -123,6 +160,31 @@ bool Demon::canSpotPlayer(Player &p, Map &map, int frame) {
   return true;
 }
 
+void Demon::getDamage(Player &player, Map &map, int damage) {
+
+  Vector2 pos = this->getPosition();
+  Vector2 ppos = player.getPosition();
+  Vector2 playerViewDir = Vector2Normalize(player.getViewDirection());
+  float distanceToPlayer = std::hypot(ppos.x - pos.x, ppos.y - pos.y);
+  Vector2 dir = Vector2Normalize(Vector2Subtract(pos, ppos));
+  // if (Vector2Angle(playerViewDir, dir) > atan2(this->size, distanceToPlayer))
+  // {
+  //   return;
+  // }
+
+  while (distanceToPlayer > this->size) {
+    ppos = Vector2Add(ppos, playerViewDir);
+    distanceToPlayer = std::hypot(ppos.x - pos.x, ppos.y - pos.y);
+    if (map.at(ppos.x / WALL_SIZE, ppos.y / WALL_SIZE) != nullptr) {
+      return;
+    }
+  }
+  cout << "damage " << damage << endl;
+  cout << "health " << health << endl;
+  health -= damage;
+  changeState(PAIN);
+}
+
 void Demon::move(Vector2 dir) {
   dir = Vector2Normalize(dir);
   this->position.x += dir.x * speed;
@@ -131,17 +193,18 @@ void Demon::move(Vector2 dir) {
 
 int Demon::getTextureId(NPCSTATE s) {
   int textureNum = textures[s].size();
-  int latency;
   switch (s) {
-  case IDLE:
-    latency = 4;
-
   case ATTACK:
-    latency = 2;
-  case NPCSTATE::PAIN:
-    latency = 1;
+    return (frameCounter / (textureNum * framePeriod) % textureNum);
+  case IDLE:
+    return (frameCounter / (framePeriod) / 2 % textureNum);
+  case WALK:
+    return (frameCounter % (textureNum * framePeriod) % textureNum);
+  case PAIN:
+    return (frameCounter / (textureNum * framePeriod) % textureNum);
+  case DEATH:
+    return (frameCounter % (textureNum * framePeriod) % textureNum);
   }
-  return frameCounter;
 }
 
 void Demon::changeState(NPCSTATE s) { state = s; }
@@ -149,8 +212,7 @@ bool Demon::affectPlayer(Player &) { return false; }
 
 void Demon::draw(RayCollisionInfo &rci) {
 
-  Texture txt = textures[state].at(
-      (this->frameCounter / (framePeriod) % textures[state].size()));
+  Texture txt = textures[state].at(getTextureId(state));
   float spriteWidth = txt.width;
   float spriteHeight = txt.height;
 
@@ -164,6 +226,5 @@ void Demon::draw(RayCollisionInfo &rci) {
 
   Rectangle source = Rectangle{0, 0, (float)spriteWidth, (float)spriteHeight};
   Rectangle dest = {posx, posy, projWidth, projHeight};
-  // std::cout << "AAAAAAAAA";
   DrawTexturePro(((txt)), source, dest, (Vector2){0, 0}, 0.0f, WHITE);
 }

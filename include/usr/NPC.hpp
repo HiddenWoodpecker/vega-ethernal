@@ -17,15 +17,19 @@ enum NPCSTATE {
 
 class NPC : public StaticSprite {
 protected:
-  // Vector2 position;
   unsigned short frameCounter = 0;
-  unsigned short framePeriod = 50;
+  unsigned short framePeriod = 120;
+  // unsigned short painCounter;
+  unsigned short painFrame = 0;
+  // unsigned short deathCounter = 5000;
+  unsigned short deathFrame = 0;
+  bool triggerAnimation = false;
 
   NPCSTATE state = IDLE;
   float speed = 1.5f;
   float scale = 1.0f;
   float offset = 0.1f;
-  int damage = 5;
+  int damage = 20;
   int health = 100;
   int attackRange = WALL_SIZE * 5;
   bool isAlive = true;
@@ -37,6 +41,7 @@ public:
   NPC(Vector2 &);
   ~NPC();
   virtual void update(Player &, Map &, int) = 0;
+  virtual void getDamage(Player &, Map &, int) = 0;
   virtual void runLogic(Player &, Map &, int) = 0;
   virtual void draw(RayCollisionInfo &) = 0;
   virtual void changeState(NPCSTATE) = 0;

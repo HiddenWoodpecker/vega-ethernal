@@ -2,8 +2,8 @@
 #include "Wall.hpp"
 class Map {
 private:
-  static const short mapHeight = 17;
-  static const short mapWidth = 10;
+  static const short mapHeight = 18;
+  static const short mapWidth = 17;
   Wall *mapContent[mapHeight][mapWidth];
 
 public:

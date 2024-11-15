@@ -2,7 +2,7 @@
 #include "Player.hpp"
 #include "Sprite.hpp"
 class StaticSprite : public Sprite {
-protected:
+public:
   bool isVisible = true;
 
 public:

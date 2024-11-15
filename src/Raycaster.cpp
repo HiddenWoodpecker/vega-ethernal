@@ -144,7 +144,8 @@ Raycaster::raycastSprites(Vector2 initPos, Vector2 viewDirection, Map &map,
     float normDist = (dist * cos(delta));
     // std::cout << "screenX " << screenX << std::endl;
     // std::cout << "normDist " << normDist << std::endl;
-    if (-50 < screenX && screenX < (WINDOW_WIDTH + 100) && normDist > 0.5f) {
+    if (-50 < screenX && screenX < (WINDOW_WIDTH + 100) && normDist > 0.5f &&
+        spritePtr->isVisible) {
       RayCollisionInfo rci;
       rci.obj = spritePtr;
       rci.offset = screenX;

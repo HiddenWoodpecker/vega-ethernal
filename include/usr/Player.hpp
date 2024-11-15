@@ -6,7 +6,9 @@ private:
   Vector2 viewDirection;
   float moveSpeed;
   Vector2 position;
-  int health;
+
+public:
+  int health = 100;
 
 public:
   std::vector<Weapon *> weapons;

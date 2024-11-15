@@ -1,9 +1,9 @@
 
 #include "../include/usr/MedPack.hpp"
 #include <iostream>
-MedPack::MedPack() : StaticSprite(){};
+MedPack::MedPack() : StaticSprite() {};
 MedPack::MedPack(Textures txt, Vector2 &position, float offset, float scale)
-    : StaticSprite(txt, position, offset, scale){};
+    : StaticSprite(txt, position, offset, scale) {};
 
 void MedPack::draw(RayCollisionInfo &rci) {
   if (this->isVisible) {
@@ -29,8 +29,11 @@ bool MedPack::affectPlayer(Player &p) {
   Vector2 pos = p.getPosition();
   if (std::hypot(this->position.x - pos.x, this->position.y - pos.y) < 50.0f &&
       isVisible) {
-    // TODO: medpack functionality
-    p.rotateCamera(0.5f);
+    if (p.health + 50 > 100) {
+      p.health = 100;
+    } else {
+      p.health += 50;
+    }
     this->isVisible = false;
     return true;
   }

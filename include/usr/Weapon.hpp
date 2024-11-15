@@ -12,6 +12,8 @@ public:
   bool isRealoading = false;
   bool isAvailable = false;
   bool isSelected = true;
+  int damage = 50;
+  int ammo = 10;
 
 public:
   Weapon();

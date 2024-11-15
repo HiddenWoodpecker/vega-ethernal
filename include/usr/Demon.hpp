@@ -9,6 +9,7 @@ public:
   Demon(Vector2 &);
   ~Demon();
   void update(Player &, Map &, int);
+  void getDamage(Player &, Map &, int);
   bool canSpotPlayer(Player &, Map &, int);
   void move(Vector2);
   void runLogic(Player &, Map &, int);

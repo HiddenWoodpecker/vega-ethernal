@@ -23,12 +23,9 @@ int main() {
     ClearBackground(BLACK);
     // DrawTexture(txt, 100, 250, WHITE);
     // TODO: MAP DRAW
-    DrawCircle(gs.getPlayer().getPosition().x / 5,
-               gs.getPlayer().getPosition().y / 5, 5, BLUE);
     // TODO raycast
     // renderer.renderObjects(spritesToDraw);
     gs.update();
-    map.draw();
     EndDrawing();
   }
   return 0;

@@ -29,7 +29,9 @@ bool AmmoPack::affectPlayer(Player &p) {
   if (std::hypot(this->position.x - pos.x, this->position.y - pos.y) < 50.0f &&
       isVisible) {
     // TODO: ammopack functionality
-    p.rotateCamera(0.0005f);
+    for (auto weapon : p.weapons) {
+      weapon->ammo += 5;
+    }
     this->isVisible = false;
     return true;
   }
