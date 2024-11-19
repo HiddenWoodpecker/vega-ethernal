@@ -2,7 +2,7 @@
 #include "../include/raylib.hpp"
 
 Player::Player(Vector2 initPos, Vector2 viewDirection, float moveSpeed)
-    : position(initPos), viewDirection(viewDirection), moveSpeed(moveSpeed){};
+    : position(initPos), viewDirection(viewDirection), moveSpeed(moveSpeed) {};
 
 void Player::move(Vector2 dir, Map &map) {
   float dx = dir.x * moveSpeed;
@@ -43,4 +43,8 @@ Vector2 Player::getViewDirection() { return viewDirection; }
 
 Vector2 Player::getPosition() { return position; }
 
-Player::~Player(){};
+Player::~Player() {
+  for (auto w : weapons) {
+    delete w;
+  }
+};

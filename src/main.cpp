@@ -16,15 +16,9 @@ int main() {
   Raycaster rc = gs.getRaycaster();
   Player player = gs.getPlayer();
   Renderer renderer = gs.getRenderer();
-  while (!w.ShouldClose()) // Detect window close button or ESC key
-  {
-    // Draw
+  while (!w.ShouldClose()) {
     BeginDrawing();
     ClearBackground(BLACK);
-    // DrawTexture(txt, 100, 250, WHITE);
-    // TODO: MAP DRAW
-    // TODO raycast
-    // renderer.renderObjects(spritesToDraw);
     gs.update();
     EndDrawing();
   }

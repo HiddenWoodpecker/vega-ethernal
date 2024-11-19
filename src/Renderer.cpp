@@ -45,18 +45,8 @@ void Renderer::renderObjects(std::vector<RayCollisionInfo> &objectsToRender) {
     if (rci.obj != nullptr) {
       rci.txt = &Renderer::getTexture(rci.obj->getTexture());
       rci.obj->draw(rci);
-    } else {
-      // std::cout << "obj not found" << std::endl;
-      //
-      // std::cout << rci.isWallHit << std::endl;
     }
   }
-
-  // else {
-  //   if (rci.obj != nullptr) {
-  //     rci.obj->draw(rci);
-  //   }
-  // }
 }
 
 void Renderer::renderWall(RayCollisionInfo &rci) {}

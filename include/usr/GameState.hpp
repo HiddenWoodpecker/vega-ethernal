@@ -33,8 +33,8 @@ public:
     for (auto a : staticSprites) {
       delete a;
     }
-    // for (auto a : enemies) {
-    //   delete a;
-    // }
+    for (auto a : enemies) {
+      delete a;
+    }
   }
 };
