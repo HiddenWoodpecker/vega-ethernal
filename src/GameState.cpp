@@ -75,7 +75,6 @@ void GameState::update() {
     DrawText("GAME OVER", WINDOW_WIDTH / 2 - 100, WINDOWN_HALF_HEIGHT, 32, RED);
   } else {
     manageControls();
-    // cout << player.getPosition().x << ' ' << player.getPosition().y << endl;
 
     std::vector<RayCollisionInfo> objectsToRender =
         rc.raycast(player.getPosition(), player.getViewDirection(), map);
@@ -112,10 +111,6 @@ void GameState::update() {
     }
 
     ++gameCounter;
-    if (gameCounter % 100 == 0) {
-
-      cout << player.health << endl;
-    }
     for (int i = 0; i < enemies.size(); ++i) {
 
       NPC *ss = dynamic_cast<NPC *>(enemies.at(i));

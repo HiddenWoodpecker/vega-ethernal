@@ -13,7 +13,7 @@ private:
   Map map;
   Renderer renderer;
   Raycaster rc;
-  long long gameCounter;
+  unsigned long long gameCounter;
   std::vector<StaticSprite *> enemies;
   std::vector<StaticSprite *> staticSprites;
   // std::vector<Projectiles>
